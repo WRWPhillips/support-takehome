@@ -72,3 +72,10 @@ Three sample input files are included. Each file should be processed independent
 ## Coding Style
 - Is it readable?
 - Is it consistent?
+
+## PLANNING
+- The goal is to identify CSV rows that might be the same person based on matching type. The type is passed in as a command line argument, and more than one of them might be applicable. Syntax is ruby match_users.rb [ filter ] [ csv file ].
+- Ruby has a really good standard library class for CSVs that I can use.
+- First step will be to parse ARGV, OptionsParser not an option because in the readme it says there will be no dash on the args passed in. ARGV[-1] will always be the CSV file name, and every other arg will be a filter. Filters should be email, phone, first_name, and last_name.
+- This is a good thing to start on, after this I'll need to call a controller that can work on the CSV. This involves CSV.read() and then csv files can be iterated over by column or row, I believe. This part of the process will not be terrible. I then need to iterate based on the column matching the filter(s) passed in. It might make sense to keep the array of args other than the file name as something to iterate over. If there's only one filter it will only have to be done once.
+- There needs to be a new column attached to the CSV and every entry needs a user_id. This is tricky
