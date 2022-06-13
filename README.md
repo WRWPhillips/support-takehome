@@ -79,3 +79,7 @@ Three sample input files are included. Each file should be processed independent
 - First step will be to parse ARGV, OptionsParser not an option because in the readme it says there will be no dash on the args passed in. ARGV[-1] will always be the CSV file name, and every other arg will be a filter. Filters should be email, phone, first_name, and last_name.
 - This is a good thing to start on, after this I'll need to call a controller that can work on the CSV. This involves CSV.read() and then csv files can be iterated over by column or row, I believe. This part of the process will not be terrible. I then need to iterate based on the column matching the filter(s) passed in. It might make sense to keep the array of args other than the file name as something to iterate over. If there's only one filter it will only have to be done once.
 - There needs to be a new column attached to the CSV and every entry needs a user_id. This is tricky
+
+- Array of filters now, here is the idea
+- I can create a new array of arrays of filtered columns -- what I mean is I can access the arrays by filters, iterating throw array of filters with for loop
+- Then compare by each of these arrays one by one

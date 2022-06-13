@@ -10,6 +10,8 @@ class GetDups
     def create
         puts "filtered csv created at: "
         output()
+        puts array_of_rows
+        puts filter_dups
     end
         
     private
@@ -22,9 +24,7 @@ class GetDups
             :write_headers => true,
             :headers => headers.unshift("User_id")
         ) do |csv|
-            CSV.foreach(("./#{csv_file}")) do |row|
-                csv << row.unshift("0")
-            end
+
         end
     end
 
@@ -32,19 +32,43 @@ class GetDups
         @headers ||= CSV.open("./#{csv_file}", &:readline)
     end
 
-    def matched_rows
+    def array_of_rows
+        arr = []
+        CSV.foreach((csv_file), headers: true) do |row|
+            arr << row
+        end 
+        array_of_rows ||= arr
+    end
 
+    def data_section
+        @data_section ||= array_of_rows.slice(1, array_of_rows.length - 1)
     end
 
     def header_filters
         idx_arr = []
         headers.each_with_index do |x, i|
-            puts x
             if filter_term_array.include?(x)
                 idx_arr.append(i)
             end
         end
         @header_filters ||= idx_arr
+    end
+
+    def filter_dups
+        pairs = {}
+        id_count = 0
+        filter_term_array.each do |filter|
+            data_section.each do |row|
+                if !pairs.has_key?(row[filter])
+                        pairs[:id_count] = []
+                        pairs[:id_count] << row[filter]
+                        id_count += 1
+                        puts pairs[:row[filter]]
+                end
+            end
+            id_count = 0
+        end
+        return pairs 
     end
     
     def filter_term_array
@@ -60,6 +84,8 @@ class GetDups
                 term_arr += ["LastName"]
             elsif x == "zip"
                 term_arr += ["Zip"]
+            else 
+                return
             end
         end
         @filter_term_array ||= term_arr
