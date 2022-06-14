@@ -10,8 +10,7 @@ class GetDups
     def create
         puts "filtered csv created at: "
         output()
-        puts array_of_rows
-        puts filter_dups
+        filter_dups()
     end
         
     private
@@ -62,8 +61,10 @@ class GetDups
                 if !pairs.has_key?(row[filter])
                         pairs[:id_count] = []
                         pairs[:id_count] << row[filter]
+                        puts pairs[:id_count]
+                        puts id_count
+                        puts row[filter]
                         id_count += 1
-                        puts pairs[:row[filter]]
                 end
             end
             id_count = 0
