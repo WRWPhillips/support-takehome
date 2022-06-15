@@ -1,13 +1,12 @@
 # Your Code Starts Here
 
-# parser class import
+# class imports here 
 require './lib/parse_arguments'
 require './lib/get_duplicates'
 require './lib/user'
 
-csv_file = ARGV[-1]
-filters = ARGV.slice(0, ARGV.length-1)
+# calling parseargs to split argv and validate args
+args = ParseArgs.new(ARGV)
 
-ParseArgs.new(filters, csv_file)
-
-GetDups.new(filters, csv_file).create
+# initializing and calling GetDups class instance
+GetDups.new(args.filters, args.csv_file).create
