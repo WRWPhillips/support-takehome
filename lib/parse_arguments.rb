@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 class ParseArgs
     def initialize(filters, csv_file)
@@ -7,5 +6,6 @@ class ParseArgs
         raise ArgumentError, "Improper file format" unless csv_file.include? ".csv"
         @csv_file = csv_file
     end
+
     private
 end

@@ -1,29 +1,29 @@
 require 'csv'
 
-class GetDups
-
+class GetDups 
     def initialize(filters, csv_file)
-        @filters = filters
-        @csv_file = csv_file
-    end
+        @filters = filters 
+        @csv_file = csv_file 
+    end 
 
-    def create
-        puts "filtered csv created at: "
+    def create 
         output()
-        filter_dups()
-    end
-        
+    end 
+
     private
 
-    attr_reader :filters
-    attr_reader :csv_file
+    attr_reader :filters 
+    attr_reader :csv_file 
 
     def output
+        assign_ids(array_of_users, filters)
         CSV.open("./outputs/#{File.basename(csv_file, ".csv")}_matched_#{Time.now.to_i}.csv", "w",
             :write_headers => true,
             :headers => headers.unshift("User_id")
         ) do |csv|
-
+            array_of_users.each do |user|
+                csv << user.rower
+            end
         end
     end
 
@@ -31,66 +31,34 @@ class GetDups
         @headers ||= CSV.open("./#{csv_file}", &:readline)
     end
 
-    def array_of_rows
+    def array_of_users
         arr = []
         CSV.foreach((csv_file), headers: true) do |row|
-            arr << row
+            arr << User.new(row)
         end 
-        array_of_rows ||= arr
+        @array_of_users ||= arr
     end
 
-    def data_section
-        @data_section ||= array_of_rows.slice(1, array_of_rows.length - 1)
-    end
-
-    def header_filters
-        idx_arr = []
-        headers.each_with_index do |x, i|
-            if filter_term_array.include?(x)
-                idx_arr.append(i)
+    def assign_ids(user_array, filters)
+        filter_keys = Hash.new()
+        filters.each do |filter|
+            filter_keys[filter] = Hash.new()
+        end 
+        user_id = 0
+        user_array.each do |user|
+            filters.each do |filter|
+                value = user.public_send("#{filter}")
+                if filter_keys[filter][value] == nil && value[0] != nil
+                    filter_keys[filter][value] = user_id
+                    user.user_id = user_id
+                    user_id += 1
+                elsif value[0] == nil 
+                    user.user_id = user_id
+                    user_id += 1
+                else 
+                    user.user_id = filter_keys[filter][value]
+                end 
             end
-        end
-        @header_filters ||= idx_arr
+        end 
     end
-
-    def filter_dups
-        pairs = {}
-        id_count = 0
-        filter_term_array.each do |filter|
-            data_section.each do |row|
-                if !pairs.has_key?(row[filter])
-                        pairs[:id_count] = []
-                        pairs[:id_count] << row[filter]
-                        puts pairs[:id_count]
-                        puts id_count
-                        puts row[filter]
-                        id_count += 1
-                end
-            end
-            id_count = 0
-        end
-        return pairs 
-    end
-    
-    def filter_term_array
-        term_arr = []
-        filters.each do |x|
-            if x == "email"
-                term_arr += ["Email", "Email1", "Email2"]
-            elsif x == "phone"
-                term_arr += ["Phone", "Phone1", "Phone2"]
-            elsif x == "first_name"
-                term_arr += ["FirstName"]
-            elsif x == "last_name"
-                term_arr += ["LastName"]
-            elsif x == "zip"
-                term_arr += ["Zip"]
-            else 
-                return
-            end
-        end
-        @filter_term_array ||= term_arr
-    end
-
-end
-
+end 
