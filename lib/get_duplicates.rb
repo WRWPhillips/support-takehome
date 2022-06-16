@@ -51,7 +51,7 @@ class GetDups
     # uses nested for loops to check for repeating values and either assign a new 
     # user_id or reuse an old one with a value that's already hashed. It gets the 
     # value for comparison with a public_send in order to be more dynamic
-    # you can see that 
+    # you can see that there's pretty intense 
     def assign_ids
         filter_keys = Hash.new()
         filters.each do |filter|
@@ -61,14 +61,13 @@ class GetDups
         array_of_users.each do |user|
             filters.each do |filter|
                 values = user.public_send("#{filter}")
-                puts values.class
                 if ["email", "phone"].include?(filter) && values.class == Array
                     if  values.all?{ |v| v.nil?}
                         user.user_id = user_id
                         user_id += 1
                     elsif filter_keys[filter].key?(values[0]) && !filter_keys[filter].key?(values[1]) && values[0] != nil
                         user.user_id = filter_keys[filter][values[0]]
-                    elsif !filter_keys[filter].key?(values[0]) && filter_keys[filter].key?(values[1]) && values[0] != nil
+                    elsif !filter_keys[filter].key?(values[0]) && filter_keys[filter].key?(values[1]) && values[1] != nil
                         user.user_id = filter_keys[filter][values[1]]
                     elsif values[0].nil? && !values[1].nil? 
                         filter_keys[filter][values[1]] = user_id
