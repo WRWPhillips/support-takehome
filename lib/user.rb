@@ -11,17 +11,17 @@ class User
     def initialize(row)
         if row.length == 7
             @user_id = nil 
-            @first = row[0]
-            @last = row[1]
+            @first_name = row[0]
+            @last_name = row[1]
             @phone = [normalize(row[2]), normalize(row[3])]
             @email = [row[4], row[5]]
             @zip = row[6]
         else 
             @user_id = nil
-            @first = row[0]
-            @last = row[1]
-            @phone = [normalize(row[2])]
-            @email = [row[3]]
+            @first_name = row[0]
+            @last_name = row[1]
+            @phone = normalize(row[2])
+            @email = row[3]
             @zip = row[4]
         end 
     end
@@ -29,12 +29,16 @@ class User
     # accessor for user_id because I need to get and set it, reader
     # for everything else
     attr_accessor :user_id
-    attr_reader :first, :last, :phone, :email, :zip 
+    attr_reader :first_name, :last_name, :phone, :email, :zip 
 
     # I didn't really know what to call this one but it reminded me of a stringer
     # except that it needs to return an array for a row, so I called it rower
     def rower
-        [user_id, first, last] + phone + email + [zip]
+        if email.class == Array
+            [user_id, first_name, last_name] + phone + email + [zip]
+        else 
+            [user_id, first_name, last_name, phone, email, zip]
+        end 
     end 
 
     private 
