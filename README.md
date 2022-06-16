@@ -4,9 +4,9 @@ The goal of this exercise is to identify rows in a CSV file that
 __may__ represent the __same person__ based on a provided __Matching Type__ (definition below).
 
 The resulting program should allow us to test at least three matching types:
- - one that matches records with the same email address
- - one that matches records with the same phone number
- - one that matches records with the same email address **OR** the same phone number
+ [x] one that matches records with the same email address
+ [x] one that matches records with the same phone number
+ [x] one that matches records with the same email address **OR** the same phone number
 
 <br>
 
@@ -57,29 +57,34 @@ Three sample input files are included. Each file should be processed independent
 # Scoring Guide
 
 ## Running your program
-- Does this run from command line as instructed?
-- Does it run without errors?
+[x] Does this run from command line as instructed?
+[x] Does it run without errors?
 
 ## Implement Matching Types
-- Can it match on a single column?
-- Do similar columns match to one another?
-- Are you able to use multiple matchers?
+[x] Can it match on a single column?
+[x] Do similar columns match to one another?
+[x] Are you able to use multiple matchers?
 
 ## Output
-- Is there a csv file?
-- Are there IDs prepended to each row?
+[x] Is there a csv file?
+[x] Are there IDs prepended to each row? 
 
 ## Coding Style
-- Is it readable?
-- Is it consistent?
+[x] Is it readable?
+[x] Is it consistent?
 
-## PLANNING
-- The goal is to identify CSV rows that might be the same person based on matching type. The type is passed in as a command line argument, and more than one of them might be applicable. Syntax is ruby match_users.rb [ filter ] [ csv file ].
-- Ruby has a really good standard library class for CSVs that I can use.
-- First step will be to parse ARGV, OptionsParser not an option because in the readme it says there will be no dash on the args passed in. ARGV[-1] will always be the CSV file name, and every other arg will be a filter. Filters should be email, phone, first_name, and last_name.
-- This is a good thing to start on, after this I'll need to call a controller that can work on the CSV. This involves CSV.read() and then csv files can be iterated over by column or row, I believe. This part of the process will not be terrible. I then need to iterate based on the column matching the filter(s) passed in. It might make sense to keep the array of args other than the file name as something to iterate over. If there's only one filter it will only have to be done once.
-- There needs to be a new column attached to the CSV and every entry needs a user_id. This is tricky
+## Usage
+Run bundle install and then use the desired syntax from above. If the syntax is wrong the script will tell you!
+Outputs will be uniquely named and placed inside of the outputs folder. 
 
-- Array of filters now, here is the idea
-- I can create a new array of arrays of filtered columns -- what I mean is I can access the arrays by filters, iterating throw array of filters with for loop
-- Then compare by each of these arrays one by one
+## Implementation
+It took a lot of troubleshooting and some different methods, but I ended up deciding on this as my final submission.
+I'm sure there's a more optimal way of doing this, but this is the best I could come up with! I have it set so that 
+there are three classes called, and one gem for normalizing phone numbers. I get consistent matching even with multiple
+filters, and I made it so that every possible filter can be used. The hardest one in terms of speed is of course input3,
+but luckily once the first ten thousand lines are parsed all the other ones already have a user_id hashed. I refactored
+and refactored until everything could happen in one passthrough inside of get_duplicates.rb, and I think the biggest drag
+on performance now is actually the phone number normalization because regex is sort of expensive memory wise. Right now on
+my computer parsing input3.csv with email and phone which are the most expensive filters takes one minute and 5 seconds,
+which I'm sure could be improved upon but gosh darn it's a huge file! I chose to use the phonelib gem just because it was 
+the most efficient and consistent way to normalize all these very abnormal phone numbers. 

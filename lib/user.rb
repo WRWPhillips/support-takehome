@@ -10,7 +10,7 @@ class User
     # on the phone numbers so they can be compared better.
     def initialize(row)
         if row.length == 7
-            @user_id = nil 
+            @user_id = 0 
             @first_name = row[0]
             @last_name = row[1]
             @phone = [normalize(row[2]), normalize(row[3])]
