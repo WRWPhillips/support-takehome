@@ -2,7 +2,7 @@
 
 # Class exists to raise argumentErrors and return
 
-class ParseArgs
+class ParseArguments
   def initialize(args)
     @args = args
   end

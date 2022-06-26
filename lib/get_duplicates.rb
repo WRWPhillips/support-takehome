@@ -4,7 +4,7 @@
 require 'csv'
 
 # class to read incoming CSV, filter, and output new csv file -- only one public function to avoid confusion
-class GetDups
+class GetDuplicates
   def initialize(filters, csv_file)
     @filters = filters
     @csv_file = csv_file
@@ -22,8 +22,8 @@ class GetDups
   # output makes use of every other private function, calling assign_ids
   # and then creating a new file inside of the outputs folder with a dynamic name,
   # that represents the final product. It goes line by line down the input csv
-  # reading lines of the input and instantiating new user classes and then calling the rower method
-  # (not a stringer) on the user class and shoveling that into the output file.
+  # reading lines of the input and instantiating new user classes and then calls
+  # to_row on the user class and shoveling that into the output file.
   # This maximizes efficiency and allows for one passthrough.
   def output
     user_id = 0

@@ -15,14 +15,14 @@ class User
       @user_id = 0
       @first_name = row[0]
       @last_name = row[1]
-      @phone = [normalize(row[2]), normalize(row[3])]
+      @phone = [fmt(row[2]), fmt(row[3])]
       @email = [row[4], row[5]]
       @zip = row[6]
     else
       @user_id = nil
       @first_name = row[0]
       @last_name = row[1]
-      @phone = normalize(row[2])
+      @phone = fmt(row[2])
       @email = row[3]
       @zip = row[4]
     end
@@ -33,8 +33,7 @@ class User
   attr_accessor :user_id
   attr_reader :first_name, :last_name, :phone, :email, :zip
 
-  # I didn't really know what to call this one but it reminded me of a stringer
-  # except that it needs to return an array for a row, so I called it rower
+  # returns row as array
   def to_row
     [user_id, first_name, last_name, phone, email, zip].flatten
   end
@@ -47,7 +46,7 @@ class User
   private
 
   # this is the only gem used, just normalizes phone numbers
-  def normalize(phone)
+  def fmt(phone)
     if phone.nil?
       nil
     else
