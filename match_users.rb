@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # Your Code Starts Here
 
-# class imports here 
+# class imports here
 require './lib/parse_arguments'
 require './lib/get_duplicates'
 require './lib/user'
